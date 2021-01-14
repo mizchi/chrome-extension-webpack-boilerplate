@@ -5,11 +5,11 @@ module.exports = {
   entry: {
     popup: path.join(__dirname, "src/popup.ts"),
     options: path.join(__dirname, "src/options.ts"),
-    background: path.join(__dirname, "src/background.ts")
+    background: path.join(__dirname, "src/background.ts"),
   },
   output: {
     path: path.join(__dirname, "build"),
-    filename: "[name].js"
+    filename: "[name].js",
   },
   module: {
     rules: [
@@ -18,32 +18,33 @@ module.exports = {
         use: {
           loader: "ts-loader",
           options: {
-            transpileOnly: true
-          }
-        }
+            transpileOnly: true,
+          },
+        },
       },
       {
         test: /\.css$/,
-        loader: "style-loader!css-loader",
-        exclude: /node_modules/
+        use: ["style-loader", "css-loader"],
+        exclude: /node_modules/,
       },
       {
         test: /\.html$/,
         loader: "html-loader",
-        exclude: /node_modules/
-      }
-    ]
+        exclude: /node_modules/,
+      },
+    ],
   },
   resolve: {
-    extensions: [".js", ".ts", ".tsx", ".json", ".mjs", ".wasm"]
+    extensions: [".js", ".ts", ".tsx", ".json", ".mjs", ".wasm"],
   },
   plugins: [
-    // new CleanWebpackPlugin(),
-    new CopyWebpackPlugin([
-      {
-        from: "assets/*",
-        flatten: true
-      }
-    ])
-  ]
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: "assets/*",
+          to: "[name].[ext]",
+        },
+      ],
+    }),
+  ],
 };
